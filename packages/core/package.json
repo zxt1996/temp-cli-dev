@@ -1,0 +1,19 @@
+{
+  "name": "@temp-cli-dev/core",
+  "version": "1.0.0",
+  "description": "> TODO: description",
+  "author": "zxt1996 <15625144271@163.com>",
+  "homepage": "",
+  "license": "ISC",
+  "main": "lib/core.js",
+  "directories": {
+    "lib": "lib",
+    "test": "__tests__"
+  },
+  "files": [
+    "lib"
+  ],
+  "scripts": {
+    "test": "echo \"Error: run tests from root\" && exit 1"
+  }
+}
