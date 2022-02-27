@@ -21,7 +21,12 @@
   },
   "dependencies": {
     "@temp-cli-dev/utils": "file:../utils",
+    "colors": "^1.4.0",
     "dedent": "^0.7.0",
+    "path-exists": "^4.0.0",
+    "root-check": "^1.0.0",
+    "semver": "^7.3.5",
+    "user-home": "^3.0.0",
     "yargs": "^17.3.1"
   },
   "gitHead": "53847c0ebbfbeb244e7f24abe32d5e22c7d42273",
