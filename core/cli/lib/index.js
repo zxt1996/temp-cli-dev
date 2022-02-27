@@ -14,7 +14,15 @@ const LOWEST_NODE_VERSION = '12.0.0'; // 当前可用的最低 node 版本
 module.exports = core;
 
 function core() {
-    prepare();
+    try {
+        prepare();
+        log.verbose('debug', 'test debug modal');
+    } catch (e) {
+        log.error(e.message);
+        if (process.env.LOG_LEVEL === 'verbose') {
+            console.log(e);
+        }
+    }
 }
 
 // 准备阶段
@@ -23,6 +31,7 @@ function prepare () {
     checkNodeVersion();
     checkRoot();
     checkUserHome();
+    checkInputArgs();
 }
 
 // 检查版本
@@ -52,4 +61,20 @@ function checkUserHome () {
     if (!userHome || !pathExists(userHome)) {
         throw new Error(colors.red('当前登录用户主目录不存在!!!'));
     }
+}
+
+// 检查入参
+function checkInputArgs() {
+    const minimist = require('minimist');
+    let args = minimist(process.argv.slice(2));
+    checkArgs(args);
+}
+
+function checkArgs(args) {
+    if (args.debug) {
+        process.env.LOG_LEVEL = 'verbose';
+    } else {
+        process.env.LOG_LEVEL = 'info';
+    }
+    log.level = process.env.LOG_LEVEL;
 }
