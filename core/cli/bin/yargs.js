@@ -1,5 +1,3 @@
-#! /usr/bin/env node
-
 const yargs = require('yargs')
 const dedent = require('dedent')
 const pkg = require('../package.json')
