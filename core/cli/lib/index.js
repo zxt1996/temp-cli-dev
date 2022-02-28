@@ -5,6 +5,7 @@ const semver = require('semver');
 const userHome = require('user-home'); // 获取当前用户主目录
 const pathExists = require('path-exists').sync; // 判断目录是否存在
 const colors = require('colors');
+const path = require('path');
 
 // 加载 .json 时会使用 JSON.parse 进行转换编译从而得到一个 json 对象
 const pkg = require('../package.json');
@@ -32,6 +33,7 @@ function prepare () {
     checkRoot();
     checkUserHome();
     checkInputArgs();
+    checkEnv();
 }
 
 // 检查版本
@@ -77,4 +79,30 @@ function checkArgs(args) {
         process.env.LOG_LEVEL = 'info';
     }
     log.level = process.env.LOG_LEVEL;
+}
+
+// 检查环境变量
+function checkEnv () {
+    const dotenv = require('dotenv');
+    const dotenvPath = path.resolve(__dirname, '../../../.env');
+    if (pathExists(dotenvPath)) {
+        // config will read your .env file, parse the contents, assign it to process.env, 
+        // and return an Object with a parsed key containing the loaded content or an error key if it failed.
+        dotenv.config({
+            path: dotenvPath
+        });
+    }
+    log.info('环境变量', process.env.CLI_HOME_PORT);
+}
+
+function createDefaultConfig() {
+    const cliConfig = {
+        home: userHome
+    }
+    if (process.env.CLI_HOME) {
+        cliConfig['cliHome'] = path.join(userHome, process.env.CLI_HOME);
+    } else {
+        cliConfig['cliHome'] = path.join(userHome, constants.DEFAULT_CLI_HOME);
+    }
+    process.env.CLI_HOME_PATH = cliConfig.cliHome;
 }
