@@ -1,5 +1,5 @@
 {
-  "name": "get-npm-info",
+  "name": "@temp-cli-dev/get-npm-info",
   "version": "1.0.0",
   "description": "> TODO: description",
   "author": "zxt1996 <15625144271@163.com>",
@@ -27,5 +27,9 @@
     "axios": "^0.26.0",
     "semver": "^7.3.5",
     "url-join": "^4.0.1"
+  },
+  "gitHead": "c22f00258ac9c60efbde423c6b1185a15e091e6a",
+  "publishConfig": {
+    "access": "public"
   }
 }
