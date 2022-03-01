@@ -14,9 +14,9 @@ const LOWEST_NODE_VERSION = '12.0.0'; // 当前可用的最低 node 版本
 
 module.exports = core;
 
-function core() {
+async function core() {
     try {
-        prepare();
+        await prepare();
         log.verbose('debug', 'test debug modal');
     } catch (e) {
         log.error(e.message);
@@ -27,13 +27,14 @@ function core() {
 }
 
 // 准备阶段
-function prepare () {
+async function prepare () {
     checkPkgVersion();
     checkNodeVersion();
     checkRoot();
     checkUserHome();
     checkInputArgs();
     checkEnv();
+    await checkGlobalUpdate();
 }
 
 // 检查版本
@@ -105,4 +106,20 @@ function createDefaultConfig() {
         cliConfig['cliHome'] = path.join(userHome, constants.DEFAULT_CLI_HOME);
     }
     process.env.CLI_HOME_PATH = cliConfig.cliHome;
+}
+
+// 检查是否是最新版本，是否需要更新
+async function checkGlobalUpdate() {
+    //1.获取当前版本号和模块名
+    const currentVersion = pkg.version;
+    const npmName = pkg.name;
+    //2.调用npm API,获取所有版本号
+    const { getNpmSemverVersion } = require('@temp-cli-dev/get-npm-info');
+    //3.提取所有版本号，比对哪些版本号是大于当前版本号
+    const lastVersion = await getNpmSemverVersion(currentVersion, npmName);
+    if (lastVersion && semver.gt(lastVersion, currentVersion)) {
+        //4.获取最新的版本号，提示用户更新到该版本
+        log.warn(colors.yellow(`请手动更新${npmName},当前版本:${currentVersion},最新版本:${lastVersion} 
+                    更新命令:npm install -g ${npmName}`))
+    }
 }
