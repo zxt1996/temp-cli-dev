@@ -1,6 +1,6 @@
 {
   "name": "@temp-cli-dev/core",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "> TODO: description",
   "author": "zxt1996 <15625144271@163.com>",
   "homepage": "",
@@ -20,8 +20,8 @@
     "test": "echo \"Error: run tests from root\" && exit 1"
   },
   "dependencies": {
-    "@temp-cli-dev/utils": "file:../utils",
     "@temp-cli-dev/get-npm-info": "file:../../utils/get-npm-info",
+    "@temp-cli-dev/utils": "file:../utils",
     "colors": "^1.4.0",
     "dedent": "^0.7.0",
     "minimist": "^1.2.5",
