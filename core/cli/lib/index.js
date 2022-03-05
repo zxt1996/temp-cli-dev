@@ -6,6 +6,9 @@ const userHome = require('user-home'); // 获取当前用户主目录
 const pathExists = require('path-exists').sync; // 判断目录是否存在
 const colors = require('colors');
 const path = require('path');
+const commander = require('commander');
+
+const program = new commander.Command();
 
 // 加载 .json 时会使用 JSON.parse 进行转换编译从而得到一个 json 对象
 const pkg = require('../package.json');
@@ -17,7 +20,7 @@ module.exports = core;
 async function core() {
     try {
         await prepare();
-        log.verbose('debug', 'test debug modal');
+        registerCommand();
     } catch (e) {
         log.error(e.message);
         if (process.env.LOG_LEVEL === 'verbose') {
@@ -32,7 +35,7 @@ async function prepare () {
     checkNodeVersion();
     checkRoot();
     checkUserHome();
-    checkInputArgs();
+    // checkInputArgs();
     checkEnv();
     await checkGlobalUpdate();
 }
@@ -121,5 +124,45 @@ async function checkGlobalUpdate() {
         //4.获取最新的版本号，提示用户更新到该版本
         log.warn(colors.yellow(`请手动更新${npmName},当前版本:${currentVersion},最新版本:${lastVersion} 
                     更新命令:npm install -g ${npmName}`))
+    }
+}
+
+// 命令注册
+function registerCommand () {
+    // option：选项
+    // 用法：.option('-n, --name <name>', 'your name', 'jsliang')
+    // 第一个参数是选项定义，可以用 |，, 和 ' ' 空格连接
+    // 第二个参数为选项描述
+    // 第三个参数为选项参数默认值（可选）
+    program.name(Object.keys(pkg.bin)[0])
+    .usage('<command> [options]')
+    .version(pkg.version)
+    .option('-d, --debug', '是否开启调式模式', false);
+
+    // .on : custom event listeners
+    // 开启 debug 模式
+    program.on('option:debug', function() {
+        if (program.opts().debug) {
+            process.env.LOG_LEVEL = 'verbose';
+        } else {
+            process.env.LOG_LEVEL = 'info';
+        }
+
+        log.level = process.env.LOG_LEVEL;
+        log.verbose('test');
+    })
+
+    // 对未知命令监听
+    program.on('command:*', function(obj) {
+        const availableCommands = program.commands.map(cmd => cmd.name())
+        console.log(colors.red('未知的命令：'+obj[0]));
+        if(availableCommands.length > 0){
+            console.log(colors.red('可用命令为：'+availableCommands.join(',')))
+        }
+    })
+
+    program.parse(program.argv);
+    if (program.args && program.args.length < 1) {
+        program.outputHelp();
     }
 }
