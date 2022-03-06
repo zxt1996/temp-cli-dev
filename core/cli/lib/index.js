@@ -8,7 +8,8 @@ const colors = require('colors');
 const path = require('path');
 const commander = require('commander');
 
-const init = require('@temp-cli-dev/init');
+// const init = require('@temp-cli-dev/init');
+const exec = require('@temp-cli-dev/exec');
 
 const program = new commander.Command();
 
@@ -145,7 +146,7 @@ function registerCommand () {
     // The argument may be <required> or [optional]
     program.command('init [projectName]')
         .option('-f, --force', '是否强制初始化项目')
-        .action(init);
+        .action(exec);
 
     // .on : custom event listeners
     // 开启 debug 模式

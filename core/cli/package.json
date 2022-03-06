@@ -21,8 +21,9 @@
   },
   "dependencies": {
     "@temp-cli-dev/get-npm-info": "file:../../utils/get-npm-info",
-    "@temp-cli-dev/utils": "file:../utils",
+    "@temp-cli-dev/utils": "file:../../utils/utils",
     "@temp-cli-dev/init": "file:../../commands/init",
+    "@temp-cli-dev/exec": "file:../exec",
     "colors": "^1.4.0",
     "commander": "^9.0.0",
     "dedent": "^0.7.0",
