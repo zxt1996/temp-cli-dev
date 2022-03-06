@@ -8,6 +8,8 @@ const colors = require('colors');
 const path = require('path');
 const commander = require('commander');
 
+const init = require('@temp-cli-dev/init');
+
 const program = new commander.Command();
 
 // 加载 .json 时会使用 JSON.parse 进行转换编译从而得到一个 json 对象
@@ -137,7 +139,13 @@ function registerCommand () {
     program.name(Object.keys(pkg.bin)[0])
     .usage('<command> [options]')
     .version(pkg.version)
-    .option('-d, --debug', '是否开启调式模式', false);
+    .option('-d, --debug', '是否开启调式模式', false)
+    .option('-tp, --targetPath <targetPath>', '是否指定本地调试文件路径', '');
+
+    // The argument may be <required> or [optional]
+    program.command('init [projectName]')
+        .option('-f, --force', '是否强制初始化项目')
+        .action(init);
 
     // .on : custom event listeners
     // 开启 debug 模式
@@ -151,6 +159,13 @@ function registerCommand () {
         log.level = process.env.LOG_LEVEL;
         log.verbose('test');
     })
+
+    //指定targetPath
+    // 是否执行本地代码，我们通过一个属性来进行标识：targetPath
+    program.on('option:targetPath', function () {
+        // 将命令中的参数写入环境变量中实现解耦，不同的项目都可访问到该变量
+        process.env.CLI_TARGET_PATH = program.opts().targetPath;
+    });
 
     // 对未知命令监听
     program.on('command:*', function(obj) {
