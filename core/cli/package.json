@@ -5,7 +5,7 @@
   "author": "zxt1996 <15625144271@163.com>",
   "homepage": "",
   "license": "ISC",
-  "main": "lib/core.js",
+  "main": "lib/index.js",
   "bin": {
     "temp-cli-dev": "/bin/index.js"
   },

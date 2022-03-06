@@ -15,13 +15,18 @@ function exec() {
     const cmdName = cmdObj.name(); 
     const packageName = SETTINGS[cmdName];
     const packageVersion = 'latest';
-     pkg = new Package({
+    pkg = new Package({
         targetPath,
         storeDir,
         packageName,
         packageVersion
-     })
-     console.log(pkg);
+    })
+     
+    console.log(pkg);
+
+    const rootFile = pkg.getRootFilePath();
+
+    console.log('rootFile >>>', rootFile);
 }
 
 module.exports = exec;

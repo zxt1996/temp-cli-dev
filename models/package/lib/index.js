@@ -1,6 +1,9 @@
 'use strict';
 
+const path = require('path');
 const { isObject } = require('@temp-cli-dev/utils');
+const pkgDir = require('pkg-dir').sync;
+const formatPath = require('@temp-cli-dev/format-path');
 
 class Package {
     constructor (options) {
@@ -30,7 +33,28 @@ class Package {
     update() {}
 
     // 获取入口文件路径
-    getRootFilePath() {}
+    getRootFilePath() {
+        function _getRootFile(targetPath){
+            // 1.获取package.json所在的目录 - pkg-dir
+            // pkg-dir 从某个目录开始向上查找，直到找到存在 package.json 的目录，并返回该目录。如果未找到则返回 null
+            const dir = pkgDir(targetPath);
+            if (dir) {
+                // 2.读取package.json - require() js/json/node
+                const pkgFile = require(path.resolve(dir, 'package.json'));
+                // 3.寻找main/lib - path
+                if (pkgFile && pkgFile.main) {
+                    // 4.路径的兼容(macOS/windows)
+                    return formatPath(path.resolve(dir, pkgFile.main));
+                }
+            }
+            return null;
+        }
+        if (this.storeDir) {
+            return _getRootFile(this.cachFilePath);
+        } else {
+            return _getRootFile(this.targetPath);
+        }
+    }
 }
 
 module.exports = Package;

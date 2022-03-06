@@ -1,5 +1,5 @@
 {
-  "name": "@temp-cli-dev/package",
+  "name": "@temp-cli-dev/format-path",
   "version": "1.0.4",
   "description": "> TODO: description",
   "author": "zxt1996 <15625144271@163.com>",
@@ -22,11 +22,6 @@
   },
   "bugs": {
     "url": "https://github.com/zxt1996/temp-cli-dev/issues"
-  },
-  "dependencies": {
-    "@temp-cli-dev/utils": "file:../../utils/utils",
-    "@temp-cli-dev/format-path": "file:../../utils/format-path",
-    "pkg-dir": "^5.0.0"
   },
   "publishConfig": {
     "access": "public"
