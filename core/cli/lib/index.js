@@ -16,6 +16,8 @@ const program = new commander.Command();
 // 加载 .json 时会使用 JSON.parse 进行转换编译从而得到一个 json 对象
 const pkg = require('../package.json');
 
+const constants = require('./const');
+
 const LOWEST_NODE_VERSION = '12.0.0'; // 当前可用的最低 node 版本
 
 module.exports = core;
@@ -99,6 +101,7 @@ function checkEnv () {
             path: dotenvPath
         });
     }
+    createDefaultConfig();
     log.info('环境变量', process.env.CLI_HOME_PORT);
 }
 

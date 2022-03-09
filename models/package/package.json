@@ -24,8 +24,10 @@
     "url": "https://github.com/zxt1996/temp-cli-dev/issues"
   },
   "dependencies": {
-    "@temp-cli-dev/utils": "file:../../utils/utils",
     "@temp-cli-dev/format-path": "file:../../utils/format-path",
+    "@temp-cli-dev/get-npm-info": "file:../../utils/get-npm-info",
+    "@temp-cli-dev/utils": "file:../../utils/utils",
+    "npminstall": "^5.5.0",
     "pkg-dir": "^5.0.0"
   },
   "publishConfig": {

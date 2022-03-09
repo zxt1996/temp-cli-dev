@@ -4,6 +4,8 @@ const path = require('path');
 const { isObject } = require('@temp-cli-dev/utils');
 const pkgDir = require('pkg-dir').sync;
 const formatPath = require('@temp-cli-dev/format-path');
+const npminstall = require('npminstall');
+const { getDefaultRegistry } = require('@temp-cli-dev/get-npm-info');
 
 class Package {
     constructor (options) {
@@ -27,7 +29,20 @@ class Package {
     exists() {}
 
     // 安装 package
-    install() {}
+    async install() {
+        console.log(this.targetPath, this.packageName, this.packageVersion);
+        return npminstall({
+            root: this.targetPath,  // 安装
+            storeDir: this.storeDir, // 缓存路径
+            registry: getDefaultRegistry(),  // 下载源
+            pkgs: [
+                { 
+                    name: this.packageName, // 需要下载的包名
+                    version: this.packageVersion  // 包的版本
+                }
+            ]
+        });
+    }
 
     // 更新 package
     update() {}
