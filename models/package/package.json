@@ -27,7 +27,9 @@
     "@temp-cli-dev/format-path": "file:../../utils/format-path",
     "@temp-cli-dev/get-npm-info": "file:../../utils/get-npm-info",
     "@temp-cli-dev/utils": "file:../../utils/utils",
+    "fs-extra": "^10.0.1",
     "npminstall": "^5.5.0",
+    "path-exists": "^4.0.0",
     "pkg-dir": "^5.0.0"
   },
   "publishConfig": {
