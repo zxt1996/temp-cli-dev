@@ -1,5 +1,5 @@
 {
-  "name": "@temp-cli-dev/exec",
+  "name": "@temp-cli-dev/command",
   "version": "1.0.5",
   "description": "> TODO: description",
   "author": "zxt1996 <15625144271@163.com>",
@@ -13,6 +13,9 @@
   "files": [
     "lib"
   ],
+  "publishConfig": {
+    "access": "public"
+  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/zxt1996/temp-cli-dev.git"
@@ -24,11 +27,7 @@
     "url": "https://github.com/zxt1996/temp-cli-dev/issues"
   },
   "dependencies": {
-    "@temp-cli-dev/package": "file:../../models/package",
-    "@temp-cli-dev/utils": "file:../../utils/utils",
-    "npmlog": "^6.0.1"
-  },
-  "publishConfig": {
-    "access": "public"
+    "colors": "^1.4.0",
+    "semver": "^7.3.5"
   }
 }

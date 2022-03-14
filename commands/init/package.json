@@ -25,5 +25,8 @@
   },
   "publishConfig": {
     "access": "public"
+  },
+  "dependencies": {
+    "@temp-cli-dev/command": "file:../../models/command"
   }
 }
