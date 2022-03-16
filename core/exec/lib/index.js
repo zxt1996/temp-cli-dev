@@ -21,8 +21,6 @@ async function exec() {
     const packageName = SETTINGS[cmdName];
     const packageVersion = 'latest';
 
-    console.log('targetPath >>>', targetPath);
-
     // 如果不存在targetPath，说明是执行线上的命令，手动设置缓存本地的targetPath路径及缓存路径
     if (!targetPath) {
         //生成缓存路径
@@ -42,14 +40,14 @@ async function exec() {
           await pkg.install();
        }
      } else {
-       pkg = new Package({
-          targetPath,
-          packageName,
-          packageVersion
-       })
+        pkg = new Package({
+            targetPath,
+            packageName,
+            packageVersion
+        })
        const rootFile = pkg.getRootFilePath();
        if (rootFile) {    //新添加
-          require(rootFile).call(null, Array.from(arguments));
+        //   require(rootFile).call(null, Array.from(arguments));
          try {
             //在当前进程中调用
             // require(rootFile).call(null, Array.from(arguments));
