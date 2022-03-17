@@ -2,6 +2,8 @@
 
 const Command = require('@temp-cli-dev/command');
 const fs = require('fs');
+const inquirer = require('inquirer');
+const fse = require('fs-extra');
 
 class InitCommand extends Command {
     init() {
@@ -16,13 +18,43 @@ class InitCommand extends Command {
         // 3.安装模板
     }
 
-    prepare () {
+    async prepare () {
         // 1. 判断当前目录是否为空
         const localPath = process.cwd();
         console.log('localPath >>>', localPath);
-        let isDirEmptyPath = this.isDirEmpty(localPath);
-        if (!isDirEmptyPath) {
-            console.log(isDirEmptyPath);
+        if (!this.isDirEmpty(localPath)) {
+            let isContinue = false;
+            // 如果 用户不是强制更新，那么就要询问用户是否继续创建
+            if (!this.force) {
+                isContinue = (
+                    await inquirer.prompt({
+                        type: 'confirm',
+                        name: 'isContinue',
+                        message: '当前目录不为空，是否继续创建？',
+                        default: false
+                    })
+                ).isContinue;
+
+                if (!isContinue) {
+                    return;
+                }
+            }
+
+            // 不管用户是否是强制更新，最后都会展示这次询问，因为清空当前目录文件是一个非常严谨的操作
+            if (isContinue || this.force) {
+                // 做二次确认
+                const { confirmDelete } = await inquirer.prompt({
+                    type: 'confirm',
+                    name: 'confirmDelete',
+                    message: '是否确认清空当前目录下的文件？',
+                    default: false
+                });
+
+                if (confirmDelete) {
+                    // 清空当前目录
+                    fse.emptyDirSync(localPath);
+                }
+            }
         }
         // 2. 是否启动强制更新
         // 3. 选择创建项目或组件
