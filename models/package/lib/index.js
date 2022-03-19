@@ -40,7 +40,7 @@ class Package {
     async prepare() {
         if (this.storeDir && !pathExists(this.storeDir)) {
             // Ensures that the directory exists. If the directory structure does not exist, it is created.
-            fse.mkdirSync(this.storeDir);
+            fse.mkdirpSync(this.storeDir);
         }
         if (this.packageVersion === 'latest') {
             this.packageVersion = await getNpmLatestVersion(this.packageName);

@@ -19,5 +19,8 @@
   "gitHead": "c22f00258ac9c60efbde423c6b1185a15e091e6a",
   "publishConfig": {
     "access": "public"
+  },
+  "dependencies": {
+    "cli-spinner": "^0.2.10"
   }
 }

@@ -5,6 +5,12 @@ const fs = require('fs');
 const inquirer = require('inquirer');
 const fse = require('fs-extra');
 const semver = require('semver');
+const Package = require('@temp-cli-dev/package');
+const {
+    spinnerStart,
+    sleep
+} = require('@temp-cli-dev/utils');
+const userHome = require('user-home');
 
 const getTemplateProject = require('./getProjectTemplate');
 
@@ -21,7 +27,11 @@ class InitCommand extends Command {
             // 1. 准备阶段
             let projectInfo = await this.prepare();
             console.log('projectInfo >>>', projectInfo);
-            // 2.下载模板
+            if (projectInfo) {
+                this.projectInfo = projectInfo;
+                //2.下载模版
+                await this.downloadTemplate()
+            }
             // 3.安装模板
         } catch (e) {
             console.log(e);
@@ -182,6 +192,51 @@ class InitCommand extends Command {
             !file.startsWith('.') && ['node_modules'].indexOf(file) < 0
           ));
         return !fileList || fileList.length <= 0
+    }
+
+    async downloadTemplate() {
+        const { projectTemplate } = this.projectInfo;
+        const templateInfo = this.template.find((item) => item.npmName === projectTemplate);
+        const targetPath = path.resolve(userHome, 'temp-cli-dev', 'template');
+        const storeDir = path.resolve(userHome, 'temp-cli-dev', 'template', 'node_modules');
+        const { npmName, version } = templateInfo;
+        this.templateInfo = templateInfo;
+        const templateNpm = new Package({
+            targetPath,
+            storeDir,
+            packageName: npmName,
+            packageVersion: version
+        })
+        if (!await templateNpm.exists()) {
+            const spinner = spinnerStart('正在下载模板...');
+            await sleep();
+            try {
+                await templateNpm.install();
+            } catch (e) {
+                throw e;
+            } finally {
+                spinner.stop(true);
+                if (await templateNpm.exists()) {
+                    console.log('下载模板成功');
+                }
+                this.templateNpm = templateNpm;
+            }
+        } else {
+            const spinner = spinnerStart('正在更新模板...');
+            await sleep();
+            try {
+                await templateNpm.update();
+            } catch (e) {
+                throw e;
+            } finally {
+                spinner.stop(true);
+                if (await templateNpm.exists()) {
+                    console.log('更新模板成功');
+                }
+                this.templateNpm = templateNpm;
+            }
+        }
+
     }
 }
 
