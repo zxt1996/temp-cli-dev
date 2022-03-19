@@ -29,6 +29,8 @@
   "dependencies": {
     "@temp-cli-dev/command": "file:../../models/command",
     "fs-extra": "^10.0.1",
-    "inquirer": "^8.2.1"
+    "inquirer": "^8.2.1",
+    "kebab-case": "^1.0.1",
+    "semver": "^7.3.5"
   }
 }
